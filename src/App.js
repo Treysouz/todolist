@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class TodoList extends Component {
+  constructor() {
+    super();
+    this.state = {
+      todo: [],
+      currentTodo: ""
+    };
+  }
+  handleChange = event => {
+    this.setState({
+      currentTodo: event.target.value
+    });
+  };
+
+  addItem = event => {
+    event.preventDefault();
+    this.setState({
+      todo: this.state.todo.concat(this.state.currentTodo)
+    });
+  };
+
+  deleteItem = event => {
+    event.target.parentNode.remove();
+  };
+
+  componentDidUpdate() {
+    console.log(this.state.todo);
+  }
+  render() {
+    return (
+      <main className="container">
+        <form onSubmit={this.addItem}>
+          <label htmlFor="taskname">Task Name:</label>
+          <input
+            type="text"
+            name="taskName"
+            placeholder="Add task here!"
+            onChange={this.handleChange}
+          ></input>
+          <button type="submit">Add Task</button>
+        </form>
+
+        <ul>
+          {this.state.todo.map(task => (
+            <li key={task}>
+              {task}{" "}
+              <button type="submit" onClick={this.deleteItem}>
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </main>
+    );
+  }
 }
-
-export default App;
